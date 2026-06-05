@@ -4,26 +4,20 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.text.Text;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpClient;
-
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class AruClient implements ClientModInitializer {
@@ -77,8 +71,14 @@ public class AruClient implements ClientModInitializer {
 
         if (isUpToDate(resourcePacksDir, "https://resourcepack.aeternum-roleplay.de/Aeternum.zip")) {
             SystemToast.show(toastManager, SystemToast.Type.PERIODIC_NOTIFICATION, Text.literal("Aeternum"), Text.literal("Du hast bereits die neuste Version des Resourcepacks!"));
+            resourcePackManager.scanPacks();
+            resourcePackManager.getProfiles().forEach(profile -> {
+                if (profile.getId().equals("file/Aeternum.zip")) {
+                    resourcePackManager.enable(profile.getId());
+                }
+            });
+            client.reloadResources();
             return;
-            //downloadFile("https://resourcepack.aeternum-roleplay.de/Aeternum.zip", target);
         }
 
         // Disable buttons to start the process
