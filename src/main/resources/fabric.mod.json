@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "aru",
+  "version": "${version}",
+  "name": "ARU",
+  "description": "Aeternum Resource Updater",
+  "authors": ["NanoLogic (Jan), Aeternum"],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/aru/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "dev.nanologic.aru.client.AruDataGenerator"
+    ],
+    "client": [
+      "dev.nanologic.aru.client.AruClient"
+    ],
+    "main": [
+      "dev.nanologic.aru.Aru"
+    ]
+  },
+  "mixins": [
+    "aru.mixins.json",
+    {
+      "config": "aru.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
