@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
@@ -22,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class AruClient implements ClientModInitializer {
     private TitleScreen _titleScreen;
+    private GameMenuScreen _gameMenuScreen;
     private static final String ETAG_FILENAME = "Aeternum.zip.etag";
 
     @Override
@@ -31,26 +33,50 @@ public class AruClient implements ClientModInitializer {
                 this._titleScreen = titleScreen;
 
                 ButtonWidget resourcePackButton = ButtonWidget.builder(
-                        Text.literal("AE"),
-                        button -> {
+                                Text.literal("AE"),
+                                button -> {
 
-                            try {
-                                downloadAndApplyResourcepack();
-                            } catch (IOException | URISyntaxException | InterruptedException e) {
-                                ToastManager toastManager = client.getToastManager();
-                                showErrorToast(toastManager);
-                            }
-                        }
-                )
-                .dimensions(
-                    titleScreen.width / 2 - 124,
-                    titleScreen.height / 4 + 72,
-                        20,
-                        20
-                )
-                .build();
+                                    try {
+                                        downloadAndApplyResourcepack();
+                                    } catch (IOException | URISyntaxException | InterruptedException e) {
+                                        ToastManager toastManager = client.getToastManager();
+                                        showErrorToast(toastManager);
+                                    }
+                                }
+                        )
+                        .dimensions(
+                                titleScreen.width / 2 - 124,
+                                titleScreen.height / 4 + 72,
+                                20,
+                                20
+                        )
+                        .build();
 
                 Screens.getButtons(titleScreen).add(resourcePackButton);
+            } else if (screen instanceof GameMenuScreen gameMenuScreen) {
+                this._gameMenuScreen = gameMenuScreen;
+
+                ButtonWidget resourcePackButton = ButtonWidget.builder(
+                                Text.literal("AE"),
+                                button -> {
+
+                                    try {
+                                        downloadAndApplyResourcepack();
+                                    } catch (IOException | URISyntaxException | InterruptedException e) {
+                                        ToastManager toastManager = client.getToastManager();
+                                        showErrorToast(toastManager);
+                                    }
+                                }
+                        )
+                        .dimensions(
+                                gameMenuScreen.width / 2 - 124,
+                                gameMenuScreen.height / 4 + 72,
+                                20,
+                                20
+                        )
+                        .build();
+
+                Screens.getButtons(gameMenuScreen).add(resourcePackButton);
             }
         }));
     }
