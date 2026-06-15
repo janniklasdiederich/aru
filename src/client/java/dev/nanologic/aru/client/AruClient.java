@@ -70,7 +70,7 @@ public class AruClient implements ClientModInitializer {
                         )
                         .dimensions(
                                 gameMenuScreen.width / 2 - 124,
-                                gameMenuScreen.height / 4 + 72,
+                                gameMenuScreen.height / 4 + 80,
                                 20,
                                 20
                         )
